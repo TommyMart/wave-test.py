@@ -1,0 +1,13 @@
+venv/
+
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+
+# Jupyter Notebook checkpoints (if you’re using notebooks)
+.ipynb_checkpoints/
+
+# Other temporary files
+*.log
+*.sqlite3
+.DS_Store  # For macOS
