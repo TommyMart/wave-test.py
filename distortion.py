@@ -7,16 +7,20 @@ from scipy.signal import resample
 
 
 def apply_distortion(audio_data, sample_rate):
-    # 1. Apply clipping
-    audio_data = apply_clipping_dist(audio_data, threshold=.4)
+    # 1. Apply clipping (0 - 1)
+    # A higher threshold will allow more of the original signal’s peaks to pass through, reducing the harshness of the distortion.
+    audio_data = apply_clipping_dist(audio_data, threshold=.8)
 
-    # 2. Apply bit depth reduction
-    audio_data = apply_bit_depth_reduction(audio_data, bit_depth=4)
+    # 2. Apply bit depth reduction (1 - 16)
+    # Increasing the bit depth will preserve more detail in the audio, making it sound less “crunchy” and more natural.
+    audio_data = apply_bit_depth_reduction(audio_data, bit_depth=10)
 
-    # 3. Apply overdrive
-    audio_data = apply_overdrive(audio_data, gain=2)
+    # 3. Apply overdrive (1.0 - 10.0<)
+    # Reducing the gain will make the overdrive effect less intense, producing softer clipping.
+    audio_data = apply_overdrive(audio_data, gain=1)
 
     # 4. Apply down sampling
+    # A higher target sample rate will reduce the “crunchiness” introduced by downsampling while still affecting the sound quality subtly.
     audio_data = apply_downsampling(
         audio_data, original_rate=sample_rate, target_rate=8000)
 
@@ -72,3 +76,5 @@ def apply_downsampling(audio_data, original_rate, target_rate):
     # Calc the new length for downsampling
     num_samples = int(len(audio_data) * target_rate / original_rate)
     downsampled_audio = resample(audio_data, num_samples)
+
+    return downsampled_audio
